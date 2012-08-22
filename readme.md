@@ -1,6 +1,6 @@
 # Backbone.js Employee Directory With Authentication#
 
-"Backbone Directory" is a simple Employee Directory application built with [Backbone.js](http://documentcloud.github.com/backbone/). I have added some basic authentication to this great project to show one way to this with backbone.js.
+"Backbone Directory" is a simple Employee Directory application built with [Backbone.js](http://documentcloud.github.com/backbone/). I have added some basic authentication to this great project to show one way to this with backbone.js. I have added the front-end authentication code to the 'web' directory only. 
 
 The application allows you to look up employees by name, view the details of an employee, and navigate up and down the Org Chart by clicking the employee’s manager or any of his/her direct reports.
 
