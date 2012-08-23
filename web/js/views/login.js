@@ -6,7 +6,7 @@ window.LoginView = Backbone.View.extend({
     },
 
     events: {
-        "click #login-button": "login"
+        "click #loginButton": "login"
     },
 
     render:function () {
@@ -17,10 +17,16 @@ window.LoginView = Backbone.View.extend({
     login:function () {
         var url = '../api/login';
         console.log('Loggin in... ');
+        var formValues = {
+            email: $('#inputEmail').val(),
+            password: $('#inputPassword').val()
+        };
 
         $.ajax({
             url:url,
+            type:'POST',
             dataType:"json",
+            data: formValues,
             success:function (data) {
                 console.log(["Login success: ", data]);
             }

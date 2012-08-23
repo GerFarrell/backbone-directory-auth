@@ -1,9 +1,24 @@
+ 
+ // Override backbone sync to handle 401 errors (error when not logged in)
+Backbone._sync = Backbone.sync; // Save original backbone sync object
+Backbone.sync = function(method, model, options) {
+    var params = _.clone(options);
+    params.error = function(request, type, message) {
+      if(request.status == 401) {
+        window.location.replace('/#login');
+      }
+    };
+
+    Backbone._sync(method, model, params);
+};
+
 window.Router = Backbone.Router.extend({
 
     routes: {
         "": "home",
         "contact": "contact",
-        "employees/:id": "employeeDetails"
+        "employees/:id": "employeeDetails",
+        "login" : "login"
     },
 
     initialize: function () {
@@ -46,6 +61,9 @@ window.Router = Backbone.Router.extend({
                 $('#content').html(new EmployeeView({model: data}).render().el);
             }
         });
+    },
+    login: function() {
+        $('#content').html(new LoginView().render().el);
     }
 
 });
