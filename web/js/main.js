@@ -1,16 +1,18 @@
  
- // Override backbone sync to handle 401 errors (error when not logged in)
-Backbone._sync = Backbone.sync; // Save original backbone sync object
-Backbone.sync = function(method, model, options) {
-    var params = _.clone(options);
-    params.error = function(request, type, message) {
-      if(request.status == 401) {
-        window.location.replace('/#login');
-      }
-    };
-
-    Backbone._sync(method, model, params);
-};
+ // Tell jQuery to watch for any 401 or 403 errors and handle them appropriately
+$.ajaxSetup({
+    statusCode: {
+        401: function(){
+            // Redirec the to the login page.
+            window.location.replace('#login');
+         
+        },
+        403: function() {
+            // 403 -- Access denied
+            window.location.replace('#denied');
+        }
+    }
+});
 
 window.Router = Backbone.Router.extend({
 
@@ -68,7 +70,7 @@ window.Router = Backbone.Router.extend({
 
 });
 
-templateLoader.load(["HomeView", "ContactView", "HeaderView", "EmployeeView", "EmployeeSummaryView", "EmployeeListItemView", "Login"],
+templateLoader.load(["HomeView", "ContactView", "HeaderView", "EmployeeView", "EmployeeSummaryView", "EmployeeListItemView", "LoginView"],
     function () {
         app = new Router();
         Backbone.history.start();
