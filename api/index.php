@@ -5,12 +5,11 @@ require 'Slim/Slim.php';
 $app = new Slim();
 
 $app->get('/employees', authorize('user'), 'getEmployees');
-$app->get('/employees/:id',	authorize('user'),'getEmployee');
-$app->get('/employees/:id/reports',	authorize('admin'),'getReports');
-$app->get('/employees/search/:query', authorize('user'),'getEmployeesByName');
+$app->get('/employees/:id', authorize('user'),	'getEmployee');
+$app->get('/employees/:id/reports', authorize('admin'),	'getReports');
+$app->get('/employees/search/:query', authorize('user'), 'getEmployeesByName');
 $app->get('/employees/modifiedsince/:timestamp', authorize('user'), 'findByModifiedDate');
-
-// I add the login route which is a post request
+// I add the login route as a post, since we will be posting the login form info
 $app->post('/login', 'login');
 
 $app->run();
@@ -38,7 +37,30 @@ function login() {
 }
 
 /**
- * Authorise function, used as Slim Route Middlewear
+ * Quick and dirty login function with hard coded credentials (admin/admin)
+ * This is just an example. Do NOT use this in a production environment
+ */
+function login() {
+    if(!empty($_POST['username']) && !empty($_POST['password'])) {
+        // normally you would load credentials from a database, 
+        // but for now we hard code an identity with a role "user" 
+        // This is just an example and is certainly not secure
+        if($_POST['username'] == 'admin' && $_POST['password'] == 'admin') {
+            $user = array("username"=>"admin", "firstName"=>"Clint", "lastName"=>"Berry", "role"=>"user");
+            $_SESSION['user'] = $user;
+            echo json_encode($user);
+        }
+        else {
+            echo '{"error":{"text":"You shall not pass..."}}';
+        }
+    }
+    else {
+        echo '{"error":{"text":"Username and Password are required."}}';
+    }
+}
+
+/**
+ * Authorise function, used as Slim Route Middlewear (http://www.slimframework.com/documentation/stable#routing-middleware)
  */
 function authorize($role = "user") {
     return function () use ( $role ) {
@@ -60,7 +82,7 @@ function authorize($role = "user") {
         }
         else {
             // If a user is not logged in at all, return a 401
-            $app->halt(401, 'You shall not pass!');
+            $app->halt(401, 'Dude, you aren\'t logged in... sign in for me, will you?');
         }
     }
 }
