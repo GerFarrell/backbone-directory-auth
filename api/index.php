@@ -29,11 +29,13 @@ function login() {
             echo json_encode($user);
         }
         else {
-            echo '{"error":{"text":"You shall not pass..."}}';
+        	$error = array("error"=> array("text"=>"You shall not pass..."));
+        	echo json_encode($error);
         }
     }
     else {
-        echo '{"error":{"text":"Username and Password are required."}}';
+	$error = array("error"=> array("text"=>"Username and Password are required."));
+        echo json_encode($error);
     }
 }
 
@@ -90,7 +92,8 @@ function getEmployees() {
         }
 
 	} catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}';
+		$error = array("error"=> array("text"=>$e->getMessage()));
+        	echo json_encode($error);
 	}
 }
 
@@ -116,7 +119,8 @@ function getEmployee($id) {
         }
 
 	} catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}';
+		$error = array("error"=> array("text"=>$e->getMessage()));
+        	echo json_encode($error);
 	}
 }
 
@@ -143,7 +147,8 @@ function getReports($id) {
         }
 
 	} catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}';
+		$error = array("error"=> array("text"=>$e->getMessage()));
+        	echo json_encode($error);
 	}
 }
 
@@ -169,7 +174,8 @@ function getEmployeesByName($name) {
         }
 
 	} catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+		$error = array("error"=> array("text"=>$e->getMessage()));
+        	echo json_encode($error);
 	}
 }
 
@@ -194,7 +200,8 @@ function getModifiedEmployees($modifiedSince) {
         }
 
 	} catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}';
+		$error = array("error"=> array("text"=>$e->getMessage()));
+        	echo json_encode($error);
 	}
 }
 
